@@ -1,17 +1,15 @@
-import json, bcrypt
+import json, jwt
+
+from users.models import User
 
 from django.test     import TestCase, Client
 from unittest.mock   import patch, MagicMock
-from .models    import User
+from my_settings  import SECRET_KEY
 # Create your tests here.
 
 class KakaoLoginTest(TestCase):
     def setUp(self):
-        User.objects.create(
-            social_login = '67890',
-            name         = "한효주",
-            email        = "abcd@gmail.com",
-        )
+        pass
 
     def tearDown(self):
         User.objects.all().delete()
@@ -34,47 +32,5 @@ class KakaoLoginTest(TestCase):
         
         mocked_requests.post = MagicMock(return_value = MockedResponse())
         
-        response = client.get("/user/kakaologin", **{"HTTP_AUTHORIZATION":"1234","content_type" : "application/json"})
+        response = client.get("/users/kakaologin", **{"AUTHORIZATION":"1234","content_type" : "application/json"})
         self.assertEqual(response.status_code, 201)
-    
-    @patch("user.views.requests")
-    def test_kakaologinview_get_success(self, mocked_requests):
-        client   = Client()
-        
-        class MockedResponse:
-            def json(self):
-                return {
-                    "id" : "67890",
-                    "properties" : {
-                        "nickname" : "한효주"
-                    },
-                    "kakao_account":{
-                        "email":"abcd@gmail.com"
-                    }
-                }
-
-        mocked_requests.post = MagicMock(return_value = MockedResponse())
-        
-        response = client.get("/user/kakaologin", **{"HTTP_AUTHORIZATION":"1234","content_type" : "application/json"})
-        self.assertEqual(response.status_code, 200)
-
-    @patch("user.views.requests")
-    def test_kakaologinview_get_fail(self, mocked_requests):
-        client   = Client()
-
-        class MockedResponse:
-            def json(self):
-                return {
-                    'msg': 'this access token does not exist', 'code': -401
-                }
-
-        mocked_requests.post = MagicMock(return_value = MockedResponse())
-
-        response = client.get("/user/kakaologin", **{"HTTP_AUTHORIZATION":"1234","content_type" : "application/json"})
-        self.assertEqual(response.json(),{'message':'INVALID_TOKEN'})
-        self.assertEqual(response.status_code, 400)
-    
-    def test_kakaologinview_get_not_found(self):
-        client   = Client()
-        response = client.get('/user/a')
-        self.assertEqual(response.status_code, 404)
