@@ -33,7 +33,7 @@ class Project(TimeStampModel):
     tag            = models.ManyToManyField('Tag')
     end_date       = models.DateTimeField(null=True)
     category       = models.ForeignKey('category', on_delete=models.SET_NULL, null=True)
-    main_image_url = models.CharField(max_length=1000)
+    main_image_url = models.URLField(max_length=1000)
     isvisible      = models.BooleanField(default=False)
     isdeleted      = models.BooleanField(default=False)  
 
