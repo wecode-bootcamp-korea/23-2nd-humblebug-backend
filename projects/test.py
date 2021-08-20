@@ -181,3 +181,77 @@ class SearchViewTest(TestCase):
         User.objects.all().delete(),
         Project.objects.all().delete()
         Category.objects.all().delete(),
+
+class ProjectOptionTest(TestCase):
+    def setUp(self):
+        User.objects.create(
+            id=2,
+            email='hyerimc858@gmail.com',
+            nickname='리미',
+            password='abc1234')
+
+        Category.objects.create(
+            id=2,
+            name='커머스'
+        )
+        
+        Project.objects.create(
+            id=2,
+            name='혜림이 프로젝트',
+            aim_amount=500000,
+            description='혜림이 프로젝트!!!',
+            end_date='2021-12-30',
+            main_image_url='asdfasdf',
+            category_id=2,
+            user_id=2,
+            )
+        
+        Tag.objects.bulk_create([
+            Tag(id=1, tag='쇼핑몰'),
+            Tag(id=2, tag='구독'),
+            Tag(id=3, tag='약'),
+            Tag(id=4, tag='23기'),
+            Tag(id=5, tag='음식'),
+            Tag(id=6, tag='패션')
+        ])
+
+        Option.objects.bulk_create([
+            Option(id=1, name='껌', amount=500, project_id=2),
+            Option(id=2, name='복숭아요거트스무디', amount=5000, project_id=2),
+            Option(id=3, name='노트북', amount=1000000, project_id=2)
+        ])
+
+        Project.objects.get(id=2).tag.add(Tag.objects.get(id=2))
+
+        Patron.objects.create(
+            option_id=1,
+            project_id=2,
+            user_id=2,
+            total_amount=100000
+            )
+            
+    def test_success_project_option_view_get_handler_method(self):
+        client   = Client()
+        response = client.get('/project/2/option')
+
+        self.assertEqual(response.json(), 
+            {
+            "option": [
+                {
+                    "id": 1,
+                    "option_name": "껌",
+                    "option_amount": 500
+                },
+                {
+                    "id": 2,
+                    "option_name": "복숭아요거트스무디",
+                    "option_amount": 5000
+                },
+                {
+                    "id": 3,
+                    "option_name": "노트북",
+                    "option_amount": 1000000
+                }
+            ]
+        }
+        )
