@@ -119,7 +119,7 @@ class ProjectTest(TestCase):
                 ],
                 "name": "혜림이 프로젝트",
                 "user": "리미",
-                "remaining_time": 127,
+                "remaining_time": 126,
                 "number_of_sponsors": 1,
                 "main_image_url": "asdfasdf",
                 "aim_amount": 500000,
