@@ -1,18 +1,15 @@
 import json
-import jwt
-import requests
-import bcrypt
 
 from datetime import datetime
 
 from django.views           import View
 from django.http            import JsonResponse
-from django.db.models       import Q, Sum, Count,Avg
-from django.core.exceptions import FieldError
+from django.db.models       import Q, Sum, Count
 
-from projects.models        import Category, Project, Tag
-from users.models           import User
-from humblebug.settings     import SECRET_KEY
+from projects.models        import Project, Patron, Option, Category, Tag
+
+from utils import log_in_confirm
+
 class ProjectListView(View):
     def get(self, request):
 
@@ -41,6 +38,39 @@ class ProjectListView(View):
             
         return JsonResponse({"project" : projects}, status=200)
 
+class SearchView(View):
+    def get(self, request):
+        search = request.GET.get('search', None)
+        projects = Project.objects.none()
+
+        if Category.objects.filter(name__contains=search).exists():
+            projects = Project.objects.filter(category__name__contains=search)
+
+        if Tag.objects.filter(tag__contains=search).exists():
+            projects = projects.union(Project.objects.filter(tag__tag__contains=search))
+
+        if Project.objects.filter(name__contains=search).exists():
+            projects = projects.union(Project.objects.filter(name__contains=search))
+
+        if Project.objects.filter(description__contains=search).exists():
+            projects = projects.union(Project.objects.filter(description__contains=search))
+
+        results = [{
+                    "id"          : project.id,
+                    "id"             : project.id,
+                    "category_id"    : project.category_id,
+                    "user_id"        : project.user_id,
+                    "user_name"      : project.user.nickname,
+                    "name"           : project.name,
+                    "image"          : project.main_image_url,
+                    "aim_amount"     : project.aim_amount,
+                    "created_at"     : project.created_at,
+                    "end_date"       : project.end_date, 
+                    "description"    : project.description,
+            } for project in projects]
+
+        return JsonResponse({'MESSAGE':results}, status=200)
+
 class ProjectView(View):
     
     def get(self, request, project_id):  
@@ -65,36 +95,33 @@ class ProjectView(View):
         }
 
         return JsonResponse({'project_information':project_information}, status=200)
-class SearchView(View):
-    def get(self, request):
-        search = request.GET.get('search', None)
-        projects = Project.objects.none()
 
-        if Category.objects.filter(name__contains=search).exists():
-            projects = Project.objects.filter(category__name__contains=search)
+class ProjectOptionView(View):
 
-        if Tag.objects.filter(tag__contains=search).exists():
-            projects = projects.union(Project.objects.filter(tag__tag__contains=search))
+    @log_in_confirm
+    def post(self, request, project_id):
+        try:
+            data = json.loads(request.body)
+            user = request.user
 
-        if Project.objects.filter(name__contains=search).exists():
-            projects = projects.union(Project.objects.filter(name__contains=search))
+            Patron.objects.create(
+                project_id   = project_id,
+                user_id      = user.id,
+                option_id    = data['option_id'],
+                total_amount = data['total_amount']
+            )
+            return JsonResponse({'MESSAGE':'SUCCESS'}, status=201)
+        
+        except KeyError:
+            return JsonResponse({'MESSAGE':'KEY_ERROR'}, status=400)
 
-        if Project.objects.filter(description__contains=search).exists():
-            projects = projects.union(Project.objects.filter(description__contains=search))
+    def get(self, request, project_id):
+        options = Option.objects.filter(project_id=project_id)
 
+        option = [{
+            'id'            : option.id,
+            'option_name'   : option.name,
+            'option_amount' : int(option.amount)
+        } for option in options]
 
-        results = [{
-                    "id"          : project.id,
-                    "id"             : project.id,
-                    "category_id"    : project.category_id,
-                    "user_id"        : project.user_id,
-                    "user_name"      : project.user.nickname,
-                    "name"           : project.name,
-                    "image"          : project.main_image_url,
-                    "aim_amount"     : project.aim_amount,
-                    "created_at"     : project.created_at,
-                    "end_date"       : project.end_date, 
-                    "description"    : project.description,
-            } for project in projects]
-
-        return JsonResponse({'MESSAGE':results}, status=200)
+        return JsonResponse({'option':option}, status=200)
