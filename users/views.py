@@ -13,21 +13,6 @@ from users.models          import User
 from humblebug.settings    import SECRET_KEY
 from my_settings           import AlGORITHM
 
-from django.shortcuts import render
-
-# Create your views here.
-import json
-import jwt
-import requests
-import bcrypt
-
-from django.views          import View
-from django.http           import JsonResponse, response
-
-from users.models          import User
-from humblebug.settings    import SECRET_KEY
-from my_settings           import AlGORITHM
-
 class KakaologinView(View):
     def get(self, request):
         try:
