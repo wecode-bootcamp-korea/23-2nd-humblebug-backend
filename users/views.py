@@ -11,7 +11,7 @@ from django.http           import JsonResponse, response
 
 from users.models          import User
 from humblebug.settings    import SECRET_KEY
-from my_settings           import AlGORITHM
+from my_settings           import ALGORITHM
 
 class KakaologinView(View):
     def get(self, request):
