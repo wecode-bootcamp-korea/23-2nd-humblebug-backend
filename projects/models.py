@@ -52,16 +52,17 @@ class Comment(models.Model):
         db_table = 'comments'
 
 class Patron(models.Model):
-    user    = models.ForeignKey('users.user', on_delete=models.CASCADE)
-    project = models.ForeignKey('project', on_delete=models.CASCADE)
-    option  = models.ForeignKey('option', on_delete=models.SET_NULL, null=True)
+    user         = models.ForeignKey('users.user', on_delete=models.CASCADE)
+    project      = models.ForeignKey('project', on_delete=models.CASCADE)
+    option       = models.ForeignKey('option', on_delete=models.SET_NULL, null=True)
+    total_amount = models.IntegerField(default=0)
 
     class Meta:
         db_table = 'patrons'
 
 class Option(models.Model):
     name    = models.CharField(max_length=45)
-    amount  = models.CharField(max_length=45)
+    amount  = models.IntegerField()
     project = models.ForeignKey('project', on_delete=models.CASCADE)
 
     class Meta:
