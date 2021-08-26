@@ -6,7 +6,7 @@ from django.views           import View
 from django.http            import JsonResponse
 from django.db.models       import Q, Sum, Count
 
-from projects.models        import Project, Patron, Option, Category, Tag
+from projects.models        import Project, Patron, Option, Category, Tag, Comment
 
 from utils import log_in_confirm
 
@@ -70,6 +70,50 @@ class SearchView(View):
             } for project in projects]
 
         return JsonResponse({'MESSAGE':results}, status=200)
+
+class CommentView(View):
+    @log_in_confirm
+    def post(self, request, project_id):
+        try:
+            if Comment.objects.filter(project_id=project_id, user_id=5).exists():
+                return JsonResponse({'MESSAGE' : 'COMMENT_ALREADY_EXIST'}, status=400)
+
+            data        = json.loads(request.body)
+            description = data['description']
+
+            if not description:
+                return JsonResponse({'MESSAGE' : 'EMPTY_CONTENT'}, status=400)
+
+            Comment.objects.create(
+                user        = request.user,
+                user_id     = data['user_id'],
+                project_id  = project_id,
+                description = data['description']
+            )
+            return JsonResponse({'MESSAGE' : 'COMMENT_CREATED'}, status=201)
+
+        except KeyError:
+            return JsonResponse({'MESSAGE' : 'KEY_ERROR'}, status=400)
+
+    @log_in_confirm
+    def delete(self, request, project_id):
+        comment = Comment.objects.filter(project_id=project_id, user_id=5)
+        if not comment.exists():
+            return JsonResponse({'MESSAGE' : 'COMMENT_DOES_NOT_EXIST'}, status=400)
+
+        comment.delete()
+        return JsonResponse({'MESSAGE' : 'COMMENT_DELETED'}, status=204)
+
+    def get(self, request, project_id):
+        comments = Comment.objects.filter(project_id=project_id).select_related('user').order_by('-id')
+
+        comment_list = [{   
+                'user_id'           : comment.user_id,
+                'nickname'          : comment.user.nickname,
+                'description'       : comment.description,
+                } for comment in comments
+            ]
+        return JsonResponse({'comments':comment_list}, status=200)
 
 class ProjectView(View):
     

@@ -1,6 +1,6 @@
 from django.test       import TestCase
 
-from projects.models   import Project, Category, Tag, Option, Patron
+from projects.models   import Project, Category, Tag, Option, Patron, Comment
 from users.models      import User
 
 import unittest, json
@@ -130,6 +130,7 @@ class ProjectTest(TestCase):
             }
         )
         self.assertEqual(response.status_code, 200)
+
 class SearchViewTest(TestCase):
     def setUp(self):
         User.objects.create(
@@ -182,19 +183,15 @@ class SearchViewTest(TestCase):
         Project.objects.all().delete()
         Category.objects.all().delete(),
 
-class ProjectOptionTest(TestCase):
+class ProjectCommentTest(TestCase):
     def setUp(self):
-        User.objects.create(
-            id=2,
-            email='hyerimc858@gmail.com',
-            nickname='리미',
-            password='abc1234')
-
-        Category.objects.create(
-            id=2,
-            name='커머스'
-        )
         
+        User.objects.create(
+            id       = 2,
+            nickname= "최혜림",
+            kakao    = 1234,
+        )
+
         Project.objects.create(
             id=2,
             name='혜림이 프로젝트',
@@ -206,52 +203,26 @@ class ProjectOptionTest(TestCase):
             user_id=2,
             )
         
-        Tag.objects.bulk_create([
-            Tag(id=1, tag='쇼핑몰'),
-            Tag(id=2, tag='구독'),
-            Tag(id=3, tag='약'),
-            Tag(id=4, tag='23기'),
-            Tag(id=5, tag='음식'),
-            Tag(id=6, tag='패션')
-        ])
+        Comment.objects.create(
+            id = 1,
+            description = '짱짱',
+            project_id = 2,
+            user_id = 2
+        )
 
-        Option.objects.bulk_create([
-            Option(id=1, name='껌', amount=500, project_id=2),
-            Option(id=2, name='복숭아요거트스무디', amount=5000, project_id=2),
-            Option(id=3, name='노트북', amount=1000000, project_id=2)
-        ])
-
-        Project.objects.get(id=2).tag.add(Tag.objects.get(id=2))
-
-        Patron.objects.create(
-            option_id=1,
-            project_id=2,
-            user_id=2,
-            total_amount=100000
-            )
-            
-    def test_success_project_option_view_get_handler_method(self):
+    def test_success_comment_view_get_handler_method(self):
         client   = Client()
-        response = client.get('/project/2/option')
+        response = client.get('/project/2/comments')
 
         self.assertEqual(response.json(), 
             {
-            "option": [
+            "comments": [
                 {
-                    "id": 1,
-                    "option_name": "껌",
-                    "option_amount": 500
-                },
-                {
-                    "id": 2,
-                    "option_name": "복숭아요거트스무디",
-                    "option_amount": 5000
-                },
-                {
-                    "id": 3,
-                    "option_name": "노트북",
-                    "option_amount": 1000000
+                    "user_id": 2,
+                    "nickname": "최혜림",
+                    "description": "짱짱"
                 }
             ]
         }
         )
+        self.assertEqual(response.status_code, 200)
