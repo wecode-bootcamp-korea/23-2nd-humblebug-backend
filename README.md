@@ -15,14 +15,16 @@
 
 ### 프로젝트 선정이유
 
--
+- 디자인이 깔끔하고 크라우드 펀딩 프로젝트 CRUD와 후원 부분이 구현하면서 배울 점이 좋을 것 같아서 선정되었습니다.
 
 ## 적용 기술 및 구현 기능
+
+- AWS 배포, S3서버 사용, 쿼리 최적화 등 
 
 ### 적용 기술
 
 > -Front-End : javascript, React.js framwork, sass<br>
-> -Back-End : Python, Django web framework, MySQL, Bcrypt, pyjwt<br>
+> -Back-End : Python, Django web framework, MySQL, Bcrypt, pyjwt, AWS, S3<br>
 > -Common : POSTMAN, RESTful API
 
 ### 구현 기능
@@ -31,21 +33,13 @@
 
 - 소셜 로그인
 
-#### 메인페이지
+#### 메인페이지, 프로젝트 더보기 리스트 페이지
 
-- 
-
-#### 검색 페이지
-
-- 
-
-#### 프로젝트 더보기 리스트 페이지
-
-- 
+- 카테고리별 분류 필터
 
 #### 프로젝트 상세페이지
 
-- 
+- 모인 금액, 달성률 등 표시
 
 <br>
 
