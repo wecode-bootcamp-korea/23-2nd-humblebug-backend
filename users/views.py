@@ -41,6 +41,6 @@ class KakaologinView(View):
 			
             token = jwt.encode({"id" : user.id}, SECRET_KEY, algorithm = "HS256")
                 
-            return JsonResponse({"message" : "SUCCESS", "acess_token" : token}, status = 200)
+            return JsonResponse({"message" : "SUCCESS", "access_token" : token}, status = 200)
         except KeyError:
                 return JsonResponse({"message" : "KEY_ERROR"}, status = 400)
