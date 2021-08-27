@@ -1,7 +1,20 @@
-# 23-2nd-humblebug-backend
-
 # 험블벅 (텀블벅 클론코딩)
 
+## Tango Plate Project Family
+
+![Image from iOS](https://user-images.githubusercontent.com/8315252/131079623-28e4e6ff-aa57-46cd-a9ed-542c52a912ff.jpg)
+
+
+- F.E<br>
+  [황도윤](https://github.com/201steve) : 할배도윤 / 본투비리더<br>
+  [김다슬](https://github.com/minmin9324) : 실세다슬 / 험블벅 실력자이자 실세 눈치 챙겨 눈치<br>
+  [김로운](https://github.com/sstaar91/) : 갓기로운 / 살리고 살리고 분위기 살살 살리고<br>
+  <br>
+- B.E<br>
+  [고유영](https://github.com/lunayyko) : 깃천유영 / 리베이스의 늪에서 다시 태어남 <br>
+  [한상웅](https://github.com/Samdaso-o) : 서윗상웅 / 침착하고 은근한 개그캐<br> 
+  [최혜림](https://github.com/Samdaso-o) : 천재혜림 / 우분투 마스터<br> 
+  <br>
 
 ## 험블벅이란?
 
@@ -19,8 +32,6 @@
 
 ## 적용 기술 및 구현 기능
 
-- AWS 배포, S3서버 사용, 쿼리 최적화 등 
-
 ### 적용 기술
 
 > -Front-End : javascript, React.js framwork, sass<br>
@@ -31,7 +42,7 @@
 
 #### 회원가입 / 로그인페이지
 
-- 소셜 로그인
+- 소셜 로그인!
 
 #### 메인페이지, 프로젝트 더보기 리스트 페이지
 
@@ -40,6 +51,7 @@
 #### 프로젝트 상세페이지
 
 - 모인 금액, 달성률 등 표시
+- 코멘트 생성, 수정, 삭제
 
 <br>
 
