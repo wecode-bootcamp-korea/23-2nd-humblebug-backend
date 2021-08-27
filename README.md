@@ -6,14 +6,14 @@
 
 
 - F.E<br>
-  [황도윤](https://github.com/201steve) : 할배도윤 / 본투비리더<br>
-  [김다슬](https://github.com/minmin9324) : 실세다슬 / 험블벅 실력자이자 실세 눈치 챙겨 눈치<br>
-  [김로운](https://github.com/sstaar91/) : 갓기로운 / 살리고 살리고 분위기 살살 살리고<br>
+  [황도윤](https://github.com/tec-motive) : 할배도윤 / 본투비리더<br>
+  [김다슬](https://github.com/cocacollllla) : 실세다슬 / 험블벅 실력자이자 실세 눈치 챙겨 눈치<br>
+  [김로운](https://github.com/lownk) : 갓기로운 / 살리고 살리고 분위기 살살 살리고<br>
   <br>
 - B.E<br>
   [고유영](https://github.com/lunayyko) : 깃천유영 / 리베이스의 늪에서 다시 태어남 <br>
-  [한상웅](https://github.com/Samdaso-o) : 서윗상웅 / 침착하고 은근한 개그캐<br> 
-  [최혜림](https://github.com/Samdaso-o) : 천재혜림 / 우분투 마스터<br> 
+  [한상웅](https://github.com/tkddnd82) : 서윗상웅 / 침착하고 은근한 개그캐<br> 
+  [최혜림](https://github.com/rimi0108) : 천재혜림 / 우분투 마스터<br> 
   <br>
 
 ## 험블벅이란?
