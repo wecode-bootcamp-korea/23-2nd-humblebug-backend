@@ -11,7 +11,6 @@ from projects.models        import Project, Patron, Option, Category, Tag, Comme
 from utils import log_in_confirm
 
 class ProjectListView(View):
-    @query_debugger
     def get(self, request):
         today = datetime.now()
         category_id = request.GET.get("categoryId")
@@ -94,7 +93,6 @@ class CommentView(View):
 
             Comment.objects.create(
                 user        = request.user,
-                user_id     = data['user_id'],
                 project_id  = project_id,
                 description = data['description']
             )
