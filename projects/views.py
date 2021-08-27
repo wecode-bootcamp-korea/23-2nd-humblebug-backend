@@ -58,6 +58,7 @@ class ProjectUpload(View):
             if file:
                 cloud_storage.upload_file(file)
                 unique_id = str(uuid.uuid4()) + file.name
+                # unique_id = cloud_storage.upload_file(file).unique_id
 
             if not file:
                 return JsonResponse({'MESSAGE' : 'IMAGE_EMPTY'}, status=400)
@@ -67,7 +68,7 @@ class ProjectUpload(View):
                     user_id        = request.user.id,
                     aim_amount     = data.get('aim_amount'),
                     description    = data.get('description'),
-                    end_date       = data.get('end_date')[0:4]+'-'+data.get('end_date')[5:7]+'-'+data.get('end_date')[8:10],
+                    # end_date       = data.get('end_date')[0:4]+'-'+data.get('end_date')[5:7]+'-'+data.get('end_date')[8:10],
                     category_id    = data.get('category_id'),
                     main_image_url = 'https://humble.s3.ap-northeast-2.amazonaws.com/' + unique_id
                     )
